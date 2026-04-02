@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order {{ product }} - {{ subcategory }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .total-price {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #28a745;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover { background: #218838; }
+
+        a.btn-back {
+            display: inline-block;
+            margin-top: 15px;
+            text-align: center;
+            color: #fff;
+            background: #6c757d;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Order: {{ product }} - {{ subcategory }}</h2>
+
+        <form method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Your Name" required>
+
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone" placeholder="Your Phone" required>
+
+            <label for="address">Delivery Address:</label>
+            <input type="text" id="address" name="address" placeholder="Your Address" required>
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+
+            <label for="delivery_time">Delivery Time:</label>
+            <input type="text" id="delivery_time" name="delivery_time" placeholder="e.g., Today 5 PM" required>
+
+            <label for="payment">Payment Method:</label>
+            <select id="payment" name="payment" required>
+                <option value="">Select Payment</option>
+                <option value="Cash on Delivery">Cash on Delivery</option>
+                <option value="Online Payment">Online Payment</option>
+            </select>
+
+            <div class="total-price">Price/unit: ₹{{ unit_price }}</div>
+
+            <button type="submit">Save Order</button>
+        </form>
+
+        <a class="btn-back" href="{{ url_for('category', product_name=product) }}">⬅ Back to Categories</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - {{ product.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('{{ url_for("static", filename="background.jpg") }}') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255,255,255,0.95);
+            padding: 30px;
+            max-width: 500px;
+            margin: 50px auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        h2 {
+            color: #d62828;
+            margin-bottom: 20px;
+        }
+        input, select, textarea {
+            width: 90%;
+            max-width: 400px;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background: #d62828;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        button:hover {
+            background: #9b1c1c;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        .product-info {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Payment & Order - {{ product.name }}</h2>
+    <div class="product-info">
+        <p>Price per unit: ₹{{ product.price }}</p>
+        <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}" style="width:150px; border-radius:10px;">
+    </div>
+    <form action="{{ url_for('order') }}" method="POST">
+        <input type="hidden" name="product" value="{{ product.name }}">
+        
+        <label>Quantity (kg/pieces):</label>
+        <input type="number" name="quantity" placeholder="Enter quantity" min="1" required>
+
+        <label>Your Name:</label>
+        <input type="text" name="name" placeholder="Enter your name" required>
+
+        <label>Phone Number:</label>
+        <input type="text" name="phone" placeholder="Enter phone number" required>
+
+        <label>Delivery Address:</label>
+        <textarea name="address" placeholder="Enter full address" required></textarea>
+
+        <label>Payment Method:</label>
+        <select name="payment" required>
+            <option value="">--Select Payment--</option>
+            <option value="Cash On Delivery">Cash On Delivery</option>
+            <option value="UPI">UPI</option>
+        </select>
+
+        <label>Preferred Delivery Time:</label>
+        <input type="text" name="delivery_time" placeholder="e.g., 2 PM - 4 PM" required>
+
+        <button type="submit">Place Order</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fresh Chicken & Mutton Shop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{{ url_for('static', filename='images/bg.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #fff;
+        }
+
+        .container {
+            padding: 20px;
+            background: rgba(0,0,0,0.6);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Login Button */
+        .login-btn {
+            align-self: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .login-btn a {
+            background: #ffd700;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .login-btn a:hover {
+            background: #e6c200;
+        }
+
+        /* Headings */
+        h1 {
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            margin-top: 30px;
+            color: #ffd700;
+        }
+
+        /* Products Grid */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px 0;
+        }
+
+        .product-card {
+            background: rgba(255,255,255,0.95);
+            color: #000;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .product-card img {
+            width: 100%;
+            border-radius: 10px;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        /* Buttons */
+        .btn-select, .btn-pay {
+            background: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .btn-select:hover, .btn-pay:hover {
+            background: #218838;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1, h2 {
+                font-size: 1.5em;
+            }
+            .product-card img {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Login -->
+        <div class="login-btn">
+            <a href="/login">Login</a>
+        </div>
+
+        <!-- Main Heading -->
+        <h1>🐔 Fresh Chicken & Mutton Shop</h1>
+        <p>Fresh | Hygienic | Fast Delivery</p>
+
+        <!-- Products -->
+        <h2>Our Products</h2>
+        <div class="products">
+            {% for product in products %}
+            <div class="product-card">
+                <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }}">
+                <h3>{{ product.name }}</h3>
+                <p>₹{{ product.price }}</p>
+                <!-- Select Button -->
+                <a class="btn-select" href="{{ url_for('category', product_name=product.name) }}">Select</a>
+                <!-- Pay Now Button (Razorpay placeholder) -->
+                <button class="btn-pay" onclick="payNow('{{ product.name }}', {{ product.price }})">Pay Now</button>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <!-- Razorpay Integration JS Placeholder -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        function payNow(productName, productPrice) {
+            alert("Payment clicked for " + productName + " - ₹" + productPrice);
+            // Razorpay integration code will go here
+        }
+    </script>
+</body>
+</html>

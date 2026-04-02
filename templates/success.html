@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{{ url_for('static', filename='images/background.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .box {
+            background: rgba(0,0,0,0.7);
+            padding: 30px;
+            border-radius: 10px;
+            display: inline-block;
+            min-width: 300px;
+        }
+
+        h2 { color: #28a745; }
+
+        .completed-msg {
+            color: #00ffcc;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .cancelled-msg {
+            color: #ff4d4d;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        table {
+            background: #fff;
+            color: #000;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 600px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            text-align: center;
+        }
+
+        th {
+            background: #f4f4f4;
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background: #ffd700;
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .btn-cancel {
+            background: #d62828;
+            color: #fff;
+        }
+
+        @media(max-width: 600px){
+            table, th, td {
+                font-size: 14px;
+            }
+            .box {
+                width: 90%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="box">
+
+    <!-- ✅ COMPLETED MESSAGE -->
+    {% if completed %}
+        <p class="completed-msg">🎉 Congratulations! Your Order has been Delivered Successfully!</p>
+    {% endif %}
+
+    <!-- ✅ CANCELLED MESSAGE -->
+    {% if order.status == "Cancelled" %}
+        <p class="cancelled-msg">❌ Your Order has been Cancelled</p>
+    {% endif %}
+
+    <!-- ✅ DEFAULT SUCCESS -->
+    {% if not completed and order.status != "Cancelled" %}
+        <h2>✅ Order Placed Successfully!</h2>
+    {% endif %}
+
+    <p>Thank you, {{ order.name or 'Customer' }} 😊</p>
+
+    <h3>Order Details:</h3>
+
+    <table>
+        <tr>
+            <th>Product</th>
+            <th>Subcategory</th>
+            <th>Quantity</th>
+            <th>Price/unit</th>
+            <th>Total Price</th>
+        </tr>
+
+        <tr>
+            <td>{{ order.product.split(' - ')[0] }}</td>
+            <td>{{ order.product.split(' - ')[1] if ' - ' in order.product else '-' }}</td>
+            <td>{{ order.quantity }}</td>
+            <td>₹{{ order_unit_price }}</td>
+            <td>₹{{ order.total_price }}</td>
+        </tr>
+
+        <tr>
+            <td colspan="4"><strong>Delivery Time</strong></td>
+            <td>{{ order.delivery_time }}</td>
+        </tr>
+
+        <tr>
+            <td colspan="4"><strong>Payment Method</strong></td>
+            <td>{{ order.payment }}</td>
+        </tr>
+
+        <tr>
+            <td colspan="4"><strong>Status</strong></td>
+            <td>{{ order.status }}</td>
+        </tr>
+    </table>
+
+    <a href="/" class="btn">⬅ Continue Shopping</a>
+
+    <!-- ✅ SHOW CANCEL ONLY IF PENDING -->
+    {% if order.status == "Pending" %}
+        <a href="/cancel_order/{{ order.id }}" class="btn btn-cancel">Cancel Order</a>
+    {% endif %}
+
+</div>
+</body>
+</html>
