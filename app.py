@@ -5,6 +5,11 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = "secret123"
 
+@app.route("/health")
+def health():
+    return "OK", 200
+
+
 # ---------------- DATABASE ----------------
 def init_db():
     conn = sqlite3.connect("database.db")
