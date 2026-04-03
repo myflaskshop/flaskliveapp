@@ -5,10 +5,10 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = "secret123"
 
+# ---------------- HEALTH CHECK ----------------
 @app.route("/health")
 def health():
     return "OK", 200
-
 
 # ---------------- DATABASE ----------------
 def init_db():
@@ -62,13 +62,11 @@ categories = {
         {"name": "Leg", "price": 500, "image": "mutton_leg.jpg"},
         {"name": "Shoulder", "price": 400, "image": "mutton_shoulder.jpg"},
         {"name": "Masala", "price": 80, "image": "mutton_masala.jpg"},
-        {"name": "mundi", "price": 600, "image": "mundi.jpg"},
-        {"name": "chap", "price": 400, "image": "motton_chap.jpg"}
+        {"name": "Mundi", "price": 600, "image": "mundi.jpg"},
+        {"name": "Chap", "price": 400, "image": "motton_chap.jpg"}
     ],
     "Eggs": [
-        
-        {"name": "Brown", "price": 8, "image": "egg_Brown.jpg"},
-        
+        {"name": "Brown", "price": 8, "image": "egg_Brown.jpg"}
     ]
 }
 
@@ -86,7 +84,6 @@ def category(product_name):
 # ---------------- ORDER FORM (MULTI-STEP) ----------------
 @app.route("/order_form/<product>/<subcategory>", methods=["GET", "POST"])
 def order_form(product, subcategory):
-    # Get price of selected subcategory
     subcat_list = categories.get(product, [])
     unit_price = next((item['price'] for item in subcat_list if item['name'] == subcategory), 0)
 
@@ -153,7 +150,6 @@ def cancel_order(order_id):
         "status": data[10]
     }
 
-    # Get unit price from products or subcategories
     base_name = order['product'].split(" - ")[0]
     sub_name = order['product'].split(" - ")[1] if " - " in order['product'] else ""
     subcat_list = categories.get(base_name, [])
@@ -185,7 +181,6 @@ def complete_order(order_id):
         "status": "Completed"
     }
 
-    # Get unit price
     base_name = order['product'].split(" - ")[0]
     sub_name = order['product'].split(" - ")[1] if " - " in order['product'] else ""
     subcat_list = categories.get(base_name, [])
@@ -236,6 +231,6 @@ def feedback():
     conn.close()
     return redirect("/")
 
-# ---------------- RUN ----------------
+# ---------------- RUN (LOCAL TESTING ONLY) ----------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
