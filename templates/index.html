@@ -138,17 +138,26 @@
                 <p>₹{{ product.price }}</p>
                 <!-- Select Button -->
                 <a class="btn-select" href="{{ url_for('category', product_name=product.name) }}">Select</a>
-                <!-- Pay Now Button (Razorpay placeholder) -->
-                <button class="btn-pay" onclick="payNow('{{ product.name }}', {{ product.price }})">Pay Now</button>
+                <!-- Pay Now Button -->
+                <button class="btn-pay" data-name="{{ product.name }}" data-price="{{ product.price }}">Pay Now</button>
             </div>
             {% endfor %}
         </div>
 
     </div>
 
-    <!-- Razorpay Integration JS Placeholder -->
+    <!-- Razorpay Integration JS -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
+        // Attach event listeners to all Pay buttons
+        document.querySelectorAll('.btn-pay').forEach(button => {
+            button.addEventListener('click', function() {
+                const productName = this.dataset.name;
+                const productPrice = parseInt(this.dataset.price);
+                payNow(productName, productPrice);
+            });
+        });
+
         function payNow(productName, productPrice) {
             alert("Payment clicked for " + productName + " - ₹" + productPrice);
             // Razorpay integration code will go here
